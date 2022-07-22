@@ -1,0 +1,57 @@
+.textField__label {
+  color: white !important;
+}
+
+.form__title {
+  color: white;
+  text-align: center;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 42px;
+}
+
+p {
+  color: #8d1919 !important;
+  font-weight: bold;
+  font-size: 12px;
+  text-align: center !important;
+}
+
+.MuiTypography-root {
+  color: white !important;
+}
+
+.MuiInput-root{
+  color: white !important;
+}
+
+.MuiSelect-select {
+  color: white !important;
+}
+
+.MuiTextField-root {
+  & :hover {
+    cursor: pointer;
+    color: white;
+  }
+}
+
+.MuiSvgIcon-root {
+  color: white !important;
+}
+
+.css-1g1ocj0-MuiInputBase-root-MuiInput-root:before,
+.css-1g6rxmw-MuiInputBase-root-MuiInput-root-MuiSelect-root:before {
+  border-bottom: 1px solid white !important;
+}
+
+css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input {
+  color: #fdf4f4 !important;
+  background: white;
+}
+
+.css-ibcodb-MuiFormControl-root-MuiTextField-root {
+  border-bottom: none !important;
+}
+
+
