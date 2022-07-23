@@ -30,9 +30,10 @@ p {
 }
 
 .MuiTextField-root {
+  border-bottom: 1px solid white !important;
   & :hover {
     cursor: pointer;
-    color: white;
+    color: white !important;
   }
 }
 
@@ -41,7 +42,11 @@ p {
 }
 
 .css-1g1ocj0-MuiInputBase-root-MuiInput-root:before,
-.css-1g6rxmw-MuiInputBase-root-MuiInput-root-MuiSelect-root:before {
+.css-1g6rxmw-MuiInputBase-root-MuiInput-root-MuiSelect-root:before,
+.css-1a1fmpi-MuiInputBase-root-MuiInput-root,
+.css-1a1fmpi-MuiInputBase-root-MuiInput-root:after,
+.css-1a1fmpi-MuiInputBase-root-MuiInput-root:after,
+.css-qlm7ex-MuiInputBase-root-MuiInput-root-MuiSelect-root:after {
   border-bottom: 1px solid white !important;
 }
 
@@ -52,6 +57,12 @@ css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input {
 
 .css-ibcodb-MuiFormControl-root-MuiTextField-root {
   border-bottom: none !important;
+}
+
+.css-6pcaf5-MuiButtonBase-root-MuiButton-root,
+.css-1m6bpm2-MuiButtonBase-root-MuiButton-root {
+  color: white !important;
+  border: 1px solid white !important;
 }
 
 

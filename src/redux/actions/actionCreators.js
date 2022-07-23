@@ -1,5 +1,9 @@
 import { ACTION_TYPES } from "./actionTypes";
 
+export function changeValuesFigure(id) {
+    return {type: ACTION_TYPES.NEW_VALUES, payload: id};
+}
+
 export function addNewFigure(value) {
     return {type: ACTION_TYPES.ADD_FIGURE, payload: value};
 };

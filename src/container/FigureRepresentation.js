@@ -2,11 +2,11 @@ import { connect } from "react-redux";
 import '../styles/figureRepresentation.scss';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import {activeFigure, addNewFigure, isEditing, removeFigure} from "../redux/actions/actionCreators";
+import {activeFigure, isEditing} from "../redux/actions/actionCreators";
 
-const FigureRepresentation = ({activeFigure, changeIsEditing, changeActiveFigure}) => {
+const FigureRepresentation = ({activeFigure, changeIsEditing, changeActiveFigure, isEditing}) => {
     return (
-        <div>{activeFigure
+        <div>{isEditing
             ? <div className={'figureRepresentation_wrapper'}>
                 <pre>{JSON.stringify(activeFigure, null, 2)}</pre>
                 <Button
@@ -29,11 +29,10 @@ const FigureRepresentation = ({activeFigure, changeIsEditing, changeActiveFigure
 
 const mapStateToProps = (state) => ({
     activeFigure: state.activeFigure,
+    isEditing: state.isEditing
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    // addNewFigure: (newFigure) => dispatch(addNewFigure(newFigure)),
-    // removeFigure: (id) => dispatch(removeFigure(id)),
     changeActiveFigure: (figure) => dispatch(activeFigure(figure)),
     changeIsEditing: (boolean) => dispatch(isEditing(boolean))
 });

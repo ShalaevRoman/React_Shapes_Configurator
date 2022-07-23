@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import '../styles/listOffigures.scss';
 import {addNewFigure, removeFigure, activeFigure, isEditing} from "../redux/actions/actionCreators";
 
-const ListOfFigures = ({allFigure, removeFigure, activeFigure, changeIsEditing}) => {
+const ListOfFigures = ({allFigure, removeFigure, activeFigure, changeIsEditing, isEditing}) => {
     return (
         <ul>
             <h1 className="form__title">List</h1>
@@ -15,7 +15,12 @@ const ListOfFigures = ({allFigure, removeFigure, activeFigure, changeIsEditing})
                     key={`${figure.id}${index}`}>
                     <span>{figure.name}</span>
                     <IconButton
-                        onClick={(event) => removeFigure(figure.id) && activeFigure(false) && event.stopPropagation()}
+                        onClick={(event) => {
+                            removeFigure(figure.id);
+                            changeIsEditing(false);
+                            activeFigure(false);
+                            event.stopPropagation();
+                        }}
                         aria-label="delete"
                         size="small">
                         <DeleteIcon fontSize="inherit"/>

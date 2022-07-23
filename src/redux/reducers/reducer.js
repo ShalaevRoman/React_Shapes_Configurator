@@ -10,6 +10,20 @@ export const reducer = (prevState, { type, payload }) => {
             });
         }
 
+        case ACTION_TYPES.NEW_VALUES: {
+            console.log(payload)
+            return refreshState(prevState, {
+                figures: [...prevState.figures.map(item => {
+                    if(item.id === payload.id) {
+                        console.log('reducer')
+                        return {...payload}
+                    }
+                    return item
+                })
+                ]
+            })
+        }
+
         case ACTION_TYPES.REMOVE_FIGURE: {
             return refreshState(prevState, {
                 figures: [...prevState.figures.filter(item => item.id !== payload)]

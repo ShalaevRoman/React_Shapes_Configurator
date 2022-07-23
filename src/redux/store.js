@@ -6,6 +6,9 @@ import { reducer } from "./reducers/reducer";
 const initState = {
     figures: [],
     isEditing: false,
+    activeFigure: {
+        id: null
+    }
 };
 
 const store = createStore(reducer, initState, composeWithDevTools());

@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import Box from '@mui/material/Box';
 import '../styles/reset.scss'
 
-import Shapes from "../copmponents/Shapes";
+import Shapes from "../components/Shapes";
 import ListOfFigures from "./ListOfFigures";
 import FigureRepresentation from "./FigureRepresentation";
 

@@ -1,3 +1,5 @@
+import * as yup from 'yup';
+import {useEffect} from "react";
 import { connect } from "react-redux";
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
@@ -8,35 +10,44 @@ import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import '../styles/shapes.scss';
-import * as yup from 'yup';
 import { useFormik } from "formik";
 
-import { addNewFigure, isEditing } from "../redux/actions/actionCreators"
-import { isObject, convertToObject, uniqueID, normalizeInitialDataFigure } from '../utils/convertToObject';
-import {useEffect} from "react";
+import { addNewFigure, isEditing, changeValuesFigure } from "../redux/actions/actionCreators"
+import { convertToObject, uniqueID, normalizeInitialDataFigure } from '../utils/convertToObject';
 
-let validationShapesSchema = yup.object().shape({
-    name: yup.string().min(5, 'Too Short!').required('Fill this field!'),
-    type: '',
-    position: yup.string().required('Fill this field!'),
-    rotation: yup.string().required('Fill this field!'),
-    scale: yup.string().required('Fill this field!'),
-    color: '',
-    wireframe: false,
-    visible: false,
+const positiveAndNegative = /^(?:\-?\d+[, ]*)+$/;
+const positiveRegEx = /^[0-9]+(,[0-9]+)*$/;
+
+const validationShapesSchema = yup.object().shape({
+    name: yup.string().required().min(5, 'Too Short!'),
+    position: yup
+        .string()
+        .required()
+        .matches(positiveAndNegative, 'Wrong format'),
+    rotation: yup
+        .string()
+        .required()
+        .matches(positiveAndNegative, 'Wrong format'),
+    scale: yup
+        .string()
+        .required()
+        .matches(positiveRegEx, 'Wrong format'),
+    color: yup.string().required().min(8),
+    wireframe: yup.boolean(),
+    visible: yup.boolean(),
 });
 
-const Shapes = ({addNewFigure, isEditing, activeFigure}) => {
+const Shapes = ({addFigure, activeFigure, isEditing, changeFigure, activeFigureId, setIsEditing}) => {
 
-const dataFigure = activeFigure
+const dataFigure = isEditing
     ?  normalizeInitialDataFigure(activeFigure)
     : {
     name: '',
     type: '',
-    position: '',
-    rotation: '',
-    scale: '',
-    color: '',
+    position: '1234',
+    rotation: '123',
+    scale: '123',
+    color: 'e32e13e23e',
     wireframe: '',
     visible: '',
 };
@@ -44,38 +55,32 @@ const dataFigure = activeFigure
     const { values, handleChange, handleSubmit, errors, isValid, resetForm, touched, handleBlur } = useFormik({
         initialValues: dataFigure,
         validationSchema: validationShapesSchema,
-        onSubmit(values, helpers) {
-            values.id = uniqueID(Date.now());
-            addNewFigure(values);
-            helpers.resetForm();
+        onSubmit(values) {
+                isEditing
+                    ? changeFigure({...values,
+                        id: activeFigureId,
+                        position: convertToObject(values.position),
+                        rotation: convertToObject(values.rotation),
+                        scale: convertToObject(values.scale)
+                    })
+                    : addFigure({
+                        ...values,
+                        id: uniqueID(),
+                        position: convertToObject(values.position),
+                        rotation: convertToObject(values.rotation),
+                        scale: convertToObject(values.scale)
+                    });
+
+                setIsEditing(false);
+                resetForm();
         },
-        validate(values) {
-            const errors = {};
-            const negativeRegEx = /^-?[0-9]+(,-?[0-9]+)*$/;
-            const positiveRegEx = /^[0-9]+(,[0-9]+)*$/;
 
-            isObject(convertToObject(values.position, negativeRegEx))
-                ? values.position = convertToObject(values.position, negativeRegEx)
-                : errors.position = convertToObject(values.position, negativeRegEx);
-
-            isObject(convertToObject(values.rotation, negativeRegEx))
-                ? values.rotation = convertToObject(values.rotation, negativeRegEx)
-                : errors.rotation = convertToObject(values.rotation, negativeRegEx);
-
-            isObject(convertToObject(values.scale, positiveRegEx))
-                ? values.scale = convertToObject(values.scale, positiveRegEx)
-                : errors.scale = convertToObject(values.scale, positiveRegEx) + 'Only positive numbers!!!';
-
-            return errors;
-        }
     });
 
     useEffect(() => {
-            if(activeFigure) {
                 resetForm({
                     values: dataFigure
                 })
-            }
 
     }, [activeFigure]);
 
@@ -133,7 +138,7 @@ const dataFigure = activeFigure
                     </Select>
                 </FormControl>
                 <TextField
-                    onBlur={console.log(values.position)}
+                    onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.position}
                     InputLabelProps={{
@@ -249,12 +254,15 @@ const dataFigure = activeFigure
 const mapStateToProps = (state) => ({
     allFigure: state,
     isEditing: state.isEditing,
-    activeFigure: state.activeFigure
+    activeFigure: state.activeFigure,
+    activeFigureId: state.activeFigure.id
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    addNewFigure: (newFigure) => dispatch(addNewFigure(newFigure)),
+    addFigure: (newFigure) => dispatch(addNewFigure(newFigure)),
     changeIsEditing: (boolean) => dispatch(isEditing(boolean)),
+    changeFigure: (values) => dispatch(changeValuesFigure(values)),
+    setIsEditing: (boolean) => dispatch(isEditing(boolean))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shapes);

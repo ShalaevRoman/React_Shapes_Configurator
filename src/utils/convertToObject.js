@@ -1,20 +1,14 @@
-export const convertToObject = (value, regularExpression) => {
+export const convertToObject = (value) => {
     const positionKeys = ["x", "y", "z"];
 
-     if (!regularExpression.test(value)) {
-         return "You must write three numbers separated by commas!!!";
-    }
     const valueArray = value.split(",").splice(0, 3);
 
     return valueArray.reduce((accumulator, value, index) => {
-        accumulator = { ...accumulator, [positionKeys[index]]: Number(value) };
+        accumulator = { ...accumulator, [positionKeys[index]]: Number(value).toString() };
         return accumulator;
     }, {});
 };
 
-export const isObject = (obj) => {
-    return Object.prototype.toString.call(obj) === '[object Object]';
-};
 
 export const uniqueID = () => {
     return Math.floor(Math.random() * Date.now())
